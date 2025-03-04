@@ -1,0 +1,82 @@
+# opencanary ssh honeypot
+type: leaky
+name: maox17/opencanary-ssh
+description: "Detect opencanary ssh access"
+filter: "evt.Parsed.service_port == '22' && evt.Parsed.log_type == '4002'"
+debug: true
+leakspeed: "30m"
+capacity: 3
+groupby: evt.Meta.source_ip
+reprocess: true
+blackhole: 1m
+labels:
+  service: opencanary
+  confidence: 3
+  spoofable: 0
+  label: "opencanary ssh Access"
+  remediation: true
+---
+type: trigger
+debug: true
+name: maox17/opencanary-ssh-trigger
+filter: "evt.Parsed.service_port == '22'"
+description: "Detect opencarary ssh access trigger"
+blackhole: 2m
+labels:
+  remediation: true
+groupby: "evt.Meta.source_ip"
+
+## opencanary bruteforce
+#type: leaky
+#name: maox17/opencanary-bf
+#description: "Detect opencanary bruteforce"
+#filter: "evt.Meta.log_type == 'opencanary_login'"
+#leakspeed: "30m"
+#capacity: 3
+#groupby: evt.Meta.source_ip
+#blackhole: 1m
+#labels:
+#  service: opencanary
+#  confidence: 3
+#  spoofable: 0
+#  classification:
+#    - attack.T1110
+#  behavior: "ssh:bruteforce"
+#  label: "opencanary Bruteforce"
+#  remediation: true
+#---
+## opencanary commands
+#type: trigger
+#name: maox17/opencanary-cmd
+#description: "Detect opencanary commands"
+#filter: "evt.Meta.log_type == 'opencanary_cmd'"
+#capacity: 0
+#groupby: evt.Meta.source_ip
+#blackhole: 1m
+#labels:
+#  service: opencanary
+#  type: command
+#  behavior: "ssh:bruteforce"
+#  classification:
+#    - attack.T1059
+#  spoofable: 0
+#  confidence: 3
+#  remediation: true
+#---
+## opencanary input
+#type: leaky
+#name: maox17/opencanary-input
+#description: "Detect opencanary input spam"
+#filter: "evt.Meta.log_type == 'opencanary_input'"
+#leakspeed: "5m"
+#capacity: 5
+#groupby: evt.Meta.source_ip
+#blackhole: 1m
+#labels:
+#  service: opencanary
+#  behavior: "ssh:bruteforce"
+#  spoofable: 0
+#  confidence: 3
+#  classification:
+#    - attack.T1059
+#  remediation: true

@@ -1,0 +1,5 @@
+filenames:
+  - /var/log/opencanary.log
+labels:
+  type: opencanary
+

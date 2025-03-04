@@ -1,0 +1,12 @@
+parsers:
+  - maox17/opencanary-logs
+  - crowdsecurity/dateparse-enrich
+collections:
+  - maox17/opencanary
+scenarios:
+  - maox17/opencanary-honeypot
+description: "Collection for opencanary SSH honeypot"
+author: maox17
+tags:
+  - opencanary
+  - ssh

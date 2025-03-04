@@ -1,0 +1,25 @@
+########
+name: maox17/opencanary-logs
+description: "Parse opencanary logs"
+filter: "evt.Line.Labels.type == 'opencanary'"
+onsuccess: next_stage
+debug: true
+statics:
+  - meta: source_ip
+    expression: JsonExtract(evt.Line.Raw, "src_host")
+  - parsed: service_port
+    expression: JsonExtract(evt.Line.Raw, "dst_port")
+  - parsed: username
+    expression: JsonExtract(evt.Line.Raw, "logdata.USERNAME")
+  - parsed: password
+    expression: JsonExtract(evt.Line.Raw, "logdata.PASSWORD")
+  - parsed: remote_version
+    expression: JsonExtract(evt.Line.Raw, "logdata.REMOTEVERSION")
+  - parsed: date_time
+    expression: JsonExtract(evt.Line.Raw, "local_time_adjusted")
+  - parsed: log_type
+    expression: JsonExtract(evt.Line.Raw, "logtype")
+  - target: evt.StrTime
+    expression: evt.Parsed.date_time
+
+
